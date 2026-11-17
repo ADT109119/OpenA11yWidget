@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">OpenA11yWidget Logo</title>
+  <desc id="logo-desc">Blue-to-cyan gradient rounded shield featuring a universal accessibility figure, focus brackets, and voice waves.</desc>
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="55%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.08"/>
+    </linearGradient>
+    <filter id="dropShadow" x="-15%" y="-15%" width="130%" height="135%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <!-- Base Rounded Badge -->
+  <rect x="20" y="20" width="200" height="200" rx="48" fill="url(#bgGrad)" filter="url(#dropShadow)"/>
+  <rect x="24" y="24" width="192" height="192" rx="44" fill="none" stroke="url(#ringGrad)" stroke-width="2.5"/>
+
+  <!-- Focus Ring Corner Brackets -->
+  <g stroke="#bae6fd" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.85">
+    <path d="M56 76 V58 Q56 54 60 54 H78"/>
+    <path d="M184 76 V58 Q184 54 180 54 H162"/>
+    <path d="M56 164 V182 Q56 186 60 186 H78"/>
+    <path d="M184 164 V182 Q184 186 180 186 H162"/>
+  </g>
+
+  <!-- Subtle Inner Circle Aura -->
+  <circle cx="120" cy="120" r="60" fill="#ffffff" fill-opacity="0.1"/>
+
+  <!-- Universal Accessibility Figure -->
+  <g fill="#ffffff" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="120" cy="76" r="13" stroke="none"/>
+    <path d="M80 99 H160" stroke-width="11" fill="none"/>
+    <path d="M120 99 V134" stroke-width="13" fill="none"/>
+    <path d="M120 134 L98 175" stroke-width="12" fill="none"/>
+    <path d="M120 134 L142 175" stroke-width="12" fill="none"/>
+  </g>
+
+  <!-- Voice / Screen Reader Waves -->
+  <g stroke="#fef08a" stroke-width="4.5" stroke-linecap="round" fill="none">
+    <path d="M167 104 A24 24 0 0 1 167 136" opacity="0.95"/>
+    <path d="M179 94 A38 38 0 0 1 179 146" opacity="0.72"/>
+  </g>
+</svg>

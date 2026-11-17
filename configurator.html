@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <title>站長嵌入碼產生器後台 | OpenA11yWidget Configurator</title>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border: #e2e8f0;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    header[role="banner"] {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .topbar {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .topbar-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1e40af;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 15px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 150ms var(--ease-out), background-color 150ms ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-outline {
+      background: var(--surface);
+      color: var(--text);
+      border-color: #cbd5e1;
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-alt);
+    }
+
+    .main-wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px 24px 80px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .panel-card h2 {
+      margin: 0 0 6px;
+      font-size: 1.25rem;
+    }
+
+    .panel-subtitle {
+      margin: 0 0 20px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .cfg-group {
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .cfg-group:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .cfg-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 0.94rem;
+      margin-bottom: 10px;
+    }
+
+    .cfg-hint {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    /* Swatches */
+    .swatch-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .swatch-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 0 0 1.5px #cbd5e1;
+      cursor: pointer;
+      transition: transform 140ms var(--ease-out), box-shadow 140ms ease;
+    }
+
+    .swatch-btn:active {
+      transform: scale(0.92);
+    }
+
+    .swatch-btn.is-active {
+      box-shadow: 0 0 0 2.5px #0f172a;
+      transform: scale(1.08);
+    }
+
+    .color-picker-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: var(--surface-alt);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .color-picker-wrap input[type="color"] {
+      border: none;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    /* Segmented & Grid Choices */
+    .option-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .option-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .choice-btn {
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: transform 140ms var(--ease-out), border-color 140ms ease, background-color 140ms ease;
+    }
+
+    .choice-btn:active {
+      transform: scale(0.97);
+    }
+
+    .choice-btn.is-active {
+      background: #eff6ff;
+      border-color: var(--primary);
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .range-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .range-box {
+      background: var(--surface-alt);
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .range-box input[type="range"] {
+      width: 100%;
+      margin-top: 6px;
+      accent-color: var(--primary);
+    }
+
+    .text-input, .select-input {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 9px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 0.9rem;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    /* Modules Checkboxes */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .module-check {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1.5px solid #e2e8f0;
+      background: var(--surface-alt);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .module-check input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Right Output Column */
+    .sticky-col {
+      position: sticky;
+      top: 84px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .preview-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      margin-bottom: 16px;
+      font-size: 0.88rem;
+      color: #1e3a8a;
+    }
+
+    .code-block-wrap {
+      margin-bottom: 18px;
+    }
+
+    .code-block-wrap:last-child {
+      margin-bottom: 0;
+    }
+
+    .code-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .code-head h3 {
+      margin: 0;
+      font-size: 0.96rem;
+    }
+
+    .copy-btn {
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 140ms var(--ease-out), background-color 140ms ease;
+    }
+
+    .copy-btn:active {
+      transform: scale(0.95);
+    }
+
+    .copy-btn.is-copied {
+      background: #16a34a;
+      border-color: #16a34a;
+      color: #ffffff;
+    }
+
+    pre.code-box {
+      margin: 0;
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--code-bg);
+      color: var(--code-text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.84rem;
+      line-height: 1.55;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    @media (max-width: 960px) {
+      .main-wrap {
+        grid-template-columns: 1fr;
+      }
+      .sticky-col {
+        position: static;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .option-grid-3, .range-row, .modules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header role="banner">
+    <div class="topbar">
+      <div class="topbar-title">
+        <img src="./assets/logo.svg" alt="OpenA11yWidget 品牌標誌" width="32" height="32" style="border-radius:8px;display:block;" />
+        <span class="topbar-badge">站長管理後台</span>
+        <h1>OpenA11yWidget 外觀設定與嵌入碼產生器</h1>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-outline" id="btn-toggle-preview">
+          展開 / 收合預覽面板
+        </button>
+        <button type="button" class="btn btn-outline" id="btn-reset-config">
+          還原預設配置
+        </button>
+        <a href="./index.html" class="btn btn-primary">
+          ← 返回示範測試首頁
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-wrap" role="main">
+    <!-- 左側設定表單 -->
+    <section class="panel-card" aria-labelledby="cfg-form-title">
+      <h2 id="cfg-form-title">外觀與功能模組配置</h2>
+      <p class="panel-subtitle">
+        調整下方任意選項，畫面上的無障礙按鈕與面板會立即同步預覽，右側程式碼亦會自動更新。
+      </p>
+
+      <!-- 1. 主題色 -->
+      <div class="cfg-group">
+        <div class="cfg-label">
+          <span>1. 主題色彩 (Theme Color)</span>
+          <span class="cfg-hint" id="val-color">#2563eb</span>
+        </div>
+        <div class="swatch-row" role="group" aria-label="預設主題色票">
+          <button type="button" class="swatch-btn is-active" data-color="#2563eb" style="background:#2563eb" aria-label="寶石藍 #2563eb"></button>
+          <button type="button" class="swatch-btn" data-color="#059669" style="background:#059669" aria-label="翡翠綠 #059669"></button>
+          <button type="button" class="swatch-btn" data-color="#7c3aed" style="background:#7c3aed" aria-label="皇家紫 #7c3aed"></button>
+          <button type="button" class="swatch-btn" data-color="#d97706" style="background:#d97706" aria-label="琥珀橘 #d97706"></button>
+          <button type="button" class="swatch-btn" data-color="#dc2626" style="background:#dc2626" aria-label="玫瑰紅 #dc2626"></button>
+          <button type="button" class="swatch-btn" data-color="#0f172a" style="background:#0f172a" aria-label="深石板 #0f172a"></button>
+          <label class="color-picker-wrap">
+            <input type="color" id="input-color" value="#2563eb" aria-label="自訂主題色" />
+            <span>自訂色票</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 2. 位置 -->
+      <div class="cfg-group">
+        <div class="cfg-label">
+          <span>2. 懸浮按鈕位置 (Position)</span>
+          <span class="cfg-hint" id="val-position">bottom-right</span>
+        </div>
+        <div class="option-grid-3" data-group="position">
+          <button type="button" class="choice-btn" data-value="top-left">左上角</button>
+          <button type="button" class="choice-btn" data-value="middle-left">左側置中</button>
+          <button type="button" class="choice-btn" data-value="bottom-left">左下角</button>
+          <button type="button" class="choice-btn" data-value="top-right">右上角</button>
+          <button type="button" class="choice-btn" data-value="middle-right">右側置中</button>
+          <button type="button" class="choice-btn is-active" data-value="bottom-right">右下角 (預設)</button>
+        </div>
+      </div>
+
+      <!-- 3. 尺寸 & 4. 形狀 -->
+      <div class="cfg-group">
+        <div class="cfg-label">
+          <span>3. 按鈕尺寸與形狀 (Size & Shape)</span>
+        </div>
+        <div class="option-grid-3" data-group="size" style="margin-bottom:10px;">
+          <button type="button" class="choice-btn" data-value="sm">小 (46px)</button>
+          <button type="button" class="choice-btn is-active" data-value="md">中 (54px)</button>
+          <button type="button" class="choice-btn" data-value="lg">大 (64px)</button>
+        </div>
+        <div class="option-grid-2" data-group="shape">
+          <button type="button" class="choice-btn is-active" data-value="circle">圓形純圖示 (Circle)</button>
+          <button type="button" class="choice-btn" data-value="pill">膠囊圖示＋文字 (Pill)</button>
+        </div>
+      </div>
+
+      <!-- 5. 圖示 -->
+      <div class="cfg-group">
+        <div class="cfg-label">
+          <span>4. 觸發圖示樣式 (Trigger Icon)</span>
+        </div>
+        <div class="option-grid-3" data-group="icon">
+          <button type="button" class="choice-btn is-active" data-value="universal">通用無障礙人形</button>
+          <button type="button" class="choice-btn" data-value="eye">視覺輔助眼睛</button>
+          <button type="button" class="choice-btn" data-value="sliders">控制滑桿圖示</button>
+        </div>
+      </div>
+
+      <!-- 6. 邊距偏移 -->
+      <div class="cfg-group">
+        <div class="cfg-label">
+          <span>5. 螢幕邊距偏移 (Offset X / Y)</span>
+        </div>
+        <div class="range-row">
+          <div class="range-box">
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;font-weight:700;">
+              <label for="input-offset-x">水平邊距 (X)</label>
+              <span id="val-offset-x">24px</span>
+            </div>
+            <input type="range" id="input-offset-x" min="0" max="96" step="2" value="24" />
+          </div>
+          <div class="range-box">
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;font-weight:700;">
+              <label for="input-offset-y">垂直邊距 (Y)</label>
+              <span id="val-offset-y">24px</span>
+            </div>
+            <input type="range" id="input-offset-y" min="0" max="96" step="2" value="24" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. 語言 & 8. 快捷鍵 -->
+      <div class="cfg-group">
+        <div class="cfg-label">
+          <span>6. 預設語言與鍵盤快捷鍵</span>
+        </div>
+        <div class="range-row">
+          <div>
+            <label for="input-lang" style="display:block;font-size:0.84rem;font-weight:700;margin-bottom:6px;">預設介面語言</label>
+            <select id="input-lang" class="select-input">
+              <option value="zh-TW" selected>繁體中文 (zh-TW)</option>
+              <option value="en">English (en)</option>
+            </select>
+          </div>
+          <div>
+            <label for="input-shortcut" style="display:block;font-size:0.84rem;font-weight:700;margin-bottom:6px;">快速開關快捷鍵</label>
+            <select id="input-shortcut" class="select-input">
+              <option value="Alt+U" selected>Alt+U (預設)</option>
+              <option value="Alt+A">Alt+A</option>
+              <option value="Alt+M">Alt+M</option>
+              <option value="Ctrl+Shift+U">Ctrl+Shift+U</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. 啟用功能模組 -->
+      <div class="cfg-group">
+        <div class="cfg-label">
+          <span>7. 啟用功能模組 (Modules)</span>
+          <span class="cfg-hint">至少保留一項模組</span>
+        </div>
+        <div class="modules-grid" id="modules-container">
+          <label class="module-check"><input type="checkbox" value="profiles" checked /> 情境快速模式 (Profiles)</label>
+          <label class="module-check"><input type="checkbox" value="visual" checked /> 視覺與色彩調整</label>
+          <label class="module-check"><input type="checkbox" value="typography" checked /> 文字與排版調整</label>
+          <label class="module-check"><input type="checkbox" value="navigation" checked /> 導航與閱讀輔助</label>
+          <label class="module-check"><input type="checkbox" value="motion" checked /> 動態抑制與語音朗讀</label>
+          <label class="module-check"><input type="checkbox" value="structure" checked /> 頁面結構導覽分頁</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- 右側：即時程式碼產出與預覽提示 -->
+    <div class="sticky-col">
+      <section class="panel-card" aria-labelledby="embed-output-title">
+        <h2 id="embed-output-title">即時嵌入程式碼</h2>
+        <p class="panel-subtitle">
+          複製下方任一段程式碼貼入您網站的 <code>&lt;head&gt;</code> 或 <code>&lt;/body&gt;</code> 之前即可立即啟用。
+        </p>
+
+        <div class="preview-banner">
+          <span>即時預覽已開啟：注意角落的無障礙懸浮按鈕正隨您的設定即時變化！</span>
+          <button type="button" class="btn btn-primary" style="padding:6px 12px;font-size:0.82rem;white-space:nowrap;" onclick="window.A11yWidget && window.A11yWidget.open()">
+            點我打開預覽
+          </button>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label for="input-script-url" style="display:block;font-size:0.84rem;font-weight:700;margin-bottom:6px;">
+            檔案路徑 / CDN 網址 (script src)
+          </label>
+          <input type="text" id="input-script-url" class="text-input" value="./a11y-widget.js" />
+        </div>
+
+        <!-- HTML Script Tag Embed -->
+        <div class="code-block-wrap">
+          <div class="code-head">
+            <h3>方式 A：單行 HTML &lt;script&gt; 標籤引入（推薦）</h3>
+            <button type="button" class="copy-btn" data-copy-target="code-html">複製嵌入碼</button>
+          </div>
+          <pre id="code-html" class="code-box"></pre>
+        </div>
+
+        <!-- JS Config Embed -->
+        <div class="code-block-wrap">
+          <div class="code-head">
+            <h3>方式 B：JavaScript 全域配置物件（進階整合）</h3>
+            <button type="button" class="copy-btn" data-copy-target="code-js">複製設定碼</button>
+          </div>
+          <pre id="code-js" class="code-box"></pre>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- 載入無障礙工具主程式 -->
+  <script src="./a11y-widget.js" defer></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var DEFAULTS = {
+        color: '#2563eb',
+        position: 'bottom-right',
+        size: 'md',
+        shape: 'circle',
+        icon: 'universal',
+        offsetX: 24,
+        offsetY: 24,
+        lang: 'zh-TW',
+        shortcut: 'Alt+U',
+        modules: ['profiles', 'visual', 'typography', 'navigation', 'motion', 'structure'],
+        scriptUrl: './a11y-widget.js'
+      };
+
+      var current = JSON.parse(JSON.stringify(DEFAULTS));
+
+      var colorInput = document.getElementById('input-color');
+      var colorText = document.getElementById('val-color');
+      var posText = document.getElementById('val-position');
+      var offsetXInput = document.getElementById('input-offset-x');
+      var offsetYInput = document.getElementById('input-offset-y');
+      var offsetXText = document.getElementById('val-offset-x');
+      var offsetYText = document.getElementById('val-offset-y');
+      var langSelect = document.getElementById('input-lang');
+      var shortcutSelect = document.getElementById('input-shortcut');
+      var scriptUrlInput = document.getElementById('input-script-url');
+      var modulesContainer = document.getElementById('modules-container');
+      var codeHtmlEl = document.getElementById('code-html');
+      var codeJsEl = document.getElementById('code-js');
+
+      function applyAndRender() {
+        // Update live widget
+        if (window.A11yWidget && typeof window.A11yWidget.updateConfig === 'function') {
+          window.A11yWidget.updateConfig({
+            color: current.color,
+            position: current.position,
+            size: current.size,
+            shape: current.shape,
+            icon: current.icon,
+            offsetX: current.offsetX,
+            offsetY: current.offsetY,
+            lang: current.lang,
+            shortcut: current.shortcut,
+            modules: current.modules.slice()
+          });
+        }
+
+        // Update helper labels
+        colorText.textContent = current.color;
+        posText.textContent = current.position;
+        offsetXText.textContent = current.offsetX + 'px';
+        offsetYText.textContent = current.offsetY + 'px';
+
+        // Build HTML <script> snippet (omit attributes equal to default to keep snippet concise, or include key ones)
+        var attrs = [];
+        if (current.color !== DEFAULTS.color) attrs.push('data-color="' + current.color + '"');
+        if (current.position !== DEFAULTS.position) attrs.push('data-position="' + current.position + '"');
+        if (current.size !== DEFAULTS.size) attrs.push('data-size="' + current.size + '"');
+        if (current.shape !== DEFAULTS.shape) attrs.push('data-shape="' + current.shape + '"');
+        if (current.icon !== DEFAULTS.icon) attrs.push('data-icon="' + current.icon + '"');
+        if (current.offsetX !== DEFAULTS.offsetX) attrs.push('data-offset-x="' + current.offsetX + '"');
+        if (current.offsetY !== DEFAULTS.offsetY) attrs.push('data-offset-y="' + current.offsetY + '"');
+        if (current.lang !== DEFAULTS.lang) attrs.push('data-lang="' + current.lang + '"');
+        if (current.shortcut !== DEFAULTS.shortcut) attrs.push('data-shortcut="' + current.shortcut + '"');
+        if (current.modules.length !== DEFAULTS.modules.length) {
+          attrs.push('data-modules="' + current.modules.join(',') + '"');
+        }
+
+        var safeSrc = (current.scriptUrl || './a11y-widget.js').trim().replace(/"/g, '&quot;');
+        var attrPart = attrs.length ? '\n  ' + attrs.join('\n  ') : '';
+        codeHtmlEl.textContent = '<script src="' + safeSrc + '"' + attrPart + '\n  defer><\/script>';
+
+        // Build JS Config snippet
+        var jsConfigObj = {
+          color: current.color,
+          position: current.position,
+          size: current.size,
+          shape: current.shape,
+          icon: current.icon,
+          offsetX: current.offsetX,
+          offsetY: current.offsetY,
+          lang: current.lang,
+          shortcut: current.shortcut,
+          modules: current.modules
+        };
+
+        codeJsEl.textContent =
+          '<script>\n' +
+          '  window.A11yWidgetConfig = ' + JSON.stringify(jsConfigObj, null, 2).replace(/\n/g, '\n  ') + ';\n' +
+          '<\/script>\n' +
+          '<script src="' + safeSrc + '" defer><\/script>';
+      }
+
+      // Color swatches
+      document.querySelectorAll('.swatch-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          current.color = btn.getAttribute('data-color');
+          colorInput.value = current.color;
+          document.querySelectorAll('.swatch-btn').forEach(function (b) { b.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          applyAndRender();
+        });
+      });
+
+      colorInput.addEventListener('input', function () {
+        current.color = colorInput.value;
+        document.querySelectorAll('.swatch-btn').forEach(function (b) {
+          b.classList.toggle('is-active', b.getAttribute('data-color') === current.color);
+        });
+        applyAndRender();
+      });
+
+      // Choice button groups
+      document.querySelectorAll('[data-group]').forEach(function (groupEl) {
+        var groupKey = groupEl.getAttribute('data-group');
+        groupEl.addEventListener('click', function (e) {
+          var btn = e.target.closest('.choice-btn');
+          if (!btn) return;
+          current[groupKey] = btn.getAttribute('data-value');
+          groupEl.querySelectorAll('.choice-btn').forEach(function (b) { b.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          applyAndRender();
+        });
+      });
+
+      // Offsets
+      offsetXInput.addEventListener('input', function () {
+        current.offsetX = Number(offsetXInput.value);
+        applyAndRender();
+      });
+      offsetYInput.addEventListener('input', function () {
+        current.offsetY = Number(offsetYInput.value);
+        applyAndRender();
+      });
+
+      // Lang, Shortcut, Script URL
+      langSelect.addEventListener('change', function () {
+        current.lang = langSelect.value;
+        applyAndRender();
+      });
+      shortcutSelect.addEventListener('change', function () {
+        current.shortcut = shortcutSelect.value;
+        applyAndRender();
+      });
+      scriptUrlInput.addEventListener('input', function () {
+        current.scriptUrl = scriptUrlInput.value;
+        applyAndRender();
+      });
+
+      // Modules checkboxes (ensure at least 1 remains selected)
+      modulesContainer.addEventListener('change', function (e) {
+        var checkboxes = Array.prototype.slice.call(modulesContainer.querySelectorAll('input[type="checkbox"]'));
+        var checked = checkboxes.filter(function (cb) { return cb.checked; }).map(function (cb) { return cb.value; });
+        if (checked.length === 0) {
+          e.target.checked = true;
+          return;
+        }
+        current.modules = checked;
+        applyAndRender();
+      });
+
+      // Copy buttons
+      document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var targetId = btn.getAttribute('data-copy-target');
+          var text = document.getElementById(targetId).textContent;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () {
+              showCopiedState(btn);
+            }, function () {
+              fallbackCopy(text, btn);
+            });
+          } else {
+            fallbackCopy(text, btn);
+          }
+        });
+      });
+
+      function fallbackCopy(text, btn) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(ta);
+        showCopiedState(btn);
+      }
+
+      function showCopiedState(btn) {
+        var orig = btn.textContent;
+        btn.textContent = '已複製!';
+        btn.classList.add('is-copied');
+        setTimeout(function () {
+          btn.textContent = orig;
+          btn.classList.remove('is-copied');
+        }, 1600);
+      }
+
+      // Topbar buttons
+      document.getElementById('btn-toggle-preview').addEventListener('click', function () {
+        if (window.A11yWidget) window.A11yWidget.toggle();
+      });
+
+      document.getElementById('btn-reset-config').addEventListener('click', function () {
+        current = JSON.parse(JSON.stringify(DEFAULTS));
+        colorInput.value = current.color;
+        offsetXInput.value = current.offsetX;
+        offsetYInput.value = current.offsetY;
+        langSelect.value = current.lang;
+        shortcutSelect.value = current.shortcut;
+        scriptUrlInput.value = current.scriptUrl;
+
+        document.querySelectorAll('.swatch-btn').forEach(function (b) {
+          b.classList.toggle('is-active', b.getAttribute('data-color') === current.color);
+        });
+        document.querySelectorAll('[data-group]').forEach(function (groupEl) {
+          var key = groupEl.getAttribute('data-group');
+          groupEl.querySelectorAll('.choice-btn').forEach(function (b) {
+            b.classList.toggle('is-active', b.getAttribute('data-value') === current[key]);
+          });
+        });
+        modulesContainer.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+          cb.checked = true;
+        });
+        applyAndRender();
+      });
+
+      applyAndRender();
+    });
+  </script>
+</body>
+</html>

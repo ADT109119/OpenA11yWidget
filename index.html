@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <title>無障礙小工具互動展示中心 | OpenA11yWidget Demo Portal</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border: #e2e8f0;
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    a:hover {
+      color: var(--primary-hover);
+    }
+
+    /* Top Header & Navigation */
+    header[role="banner"] {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .brand-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.82rem;
+    }
+
+    nav[aria-label="主要導覽"] ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav[aria-label="主要導覽"] a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    nav[aria-label="主要導覽"] a:hover {
+      color: var(--primary);
+    }
+
+    .header-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 150ms var(--ease-out), background-color 150ms ease, border-color 150ms ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      color: #ffffff;
+    }
+
+    .btn-outline {
+      background: var(--surface);
+      color: var(--text);
+      border-color: #cbd5e1;
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-alt);
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px 36px;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1e40af;
+      font-size: 0.84rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .pulse-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #2563eb;
+      animation: pulseGlow 1.6s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.45); opacity: 0.45; }
+    }
+
+    .hero h1 {
+      font-size: 2.35rem;
+      line-height: 1.25;
+      margin: 0 0 14px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      margin: 0 0 22px;
+    }
+
+    .quick-try-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    /* Animated Demo Card in Hero */
+    .motion-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+    }
+
+    .motion-stage {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--surface-alt);
+      margin-top: 12px;
+    }
+
+    .orbit-spinner {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 4px solid #cbd5e1;
+      border-top-color: var(--primary);
+      border-right-color: #10b981;
+      animation: spin360 2.2s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin360 {
+      to { transform: rotate(360deg); }
+    }
+
+    .ticker-bar {
+      overflow: hidden;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: #1e3a8a;
+    }
+
+    .ticker-track {
+      display: inline-block;
+      white-space: nowrap;
+      animation: slideTicker 10s linear infinite;
+    }
+
+    @keyframes slideTicker {
+      0% { transform: translateX(0%); }
+      50% { transform: translateX(-18%); }
+      100% { transform: translateX(0%); }
+    }
+
+    /* Main Content Layout */
+    .layout-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 24px 64px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .card-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+    }
+
+    .card-section h2 {
+      margin-top: 0;
+      font-size: 1.45rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .card-section h3 {
+      font-size: 1.15rem;
+      margin: 20px 0 8px;
+    }
+
+    .card-section h4 {
+      font-size: 1rem;
+      margin: 14px 0 6px;
+      color: var(--text-muted);
+    }
+
+    /* Colorblind & Saturation Test Palette */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .swatch-card {
+      border-radius: 12px;
+      padding: 14px;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .swatch-red { background: #dc2626; }
+    .swatch-green { background: #16a34a; }
+    .swatch-amber { background: #d97706; }
+    .swatch-blue { background: #2563eb; }
+
+    /* Media Gallery with ALT text */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .media-item {
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--surface-alt);
+    }
+
+    .media-item img {
+      display: block;
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .media-item figcaption {
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      background: var(--surface);
+    }
+
+    /* Form Controls */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .form-control {
+      padding: 10px 12px;
+      border-radius: 9px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    blockquote {
+      margin: 16px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--primary);
+      background: #eff6ff;
+      border-radius: 0 10px 10px 0;
+      color: #1e3a8a;
+    }
+
+    aside[aria-label="輔助說明與快速檢測欄"] .side-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .shortcut-kbd {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #0f172a;
+      color: #ffffff;
+      font-family: monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    footer[role="contentinfo"] {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 36px 24px;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-inner a {
+      color: #93c5fd;
+    }
+
+    @media (max-width: 900px) {
+      .hero, .layout-grid {
+        grid-template-columns: 1fr;
+      }
+      .palette-grid, .media-grid, .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂部語意化地標 Header & Nav -->
+  <header role="banner">
+    <div class="nav-container">
+      <a href="./index.html" class="brand">
+        <img src="./assets/logo.svg" alt="OpenA11yWidget 品牌標誌" width="36" height="36" style="border-radius:10px;display:block;" />
+        <span>全民無障礙數位服務示範網</span>
+      </a>
+
+      <nav aria-label="主要導覽">
+        <ul>
+          <li><a href="#typography-section">排版與閱讀測試</a></li>
+          <li><a href="#visual-section">色彩與對比測試</a></li>
+          <li><a href="#media-section">圖片與替代文字</a></li>
+          <li><a href="#form-section">無障礙表單互動</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-cta">
+        <button type="button" class="btn btn-outline" onclick="window.A11yWidget && window.A11yWidget.toggle()">
+          開啟無障礙面板 (Alt+U)
+        </button>
+        <a href="./configurator.html" class="btn btn-primary">
+          前往嵌入碼產生器後台 →
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 視覺主區塊 -->
+  <section class="hero" aria-label="首頁核心介紹">
+    <div>
+      <div class="live-pill">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span>Shadow DOM 零污染隔離架構 · WCAG 2.1 AA 輔助設計</span>
+      </div>
+      <h1>讓每一個網站都能一鍵具備完整的無障礙輔助體驗</h1>
+      <p>
+        本頁面為 <strong>OpenA11yWidget</strong> 的真實 DOM 測試環境。您可以點擊右下角懸浮按鈕（或按下快捷鍵 <span class="shortcut-kbd">Alt+U</span>），立即測試情境快速模式、視覺色盲濾鏡、字體放大、閱讀尺規、專注遮罩、點擊語音朗讀與頁面結構樹導覽。
+      </p>
+
+      <div class="quick-try-bar" role="group" aria-label="快速體驗無障礙情境">
+        <button type="button" class="btn btn-primary" title="立即展開無障礙輔助控制面板" onclick="window.A11yWidget && window.A11yWidget.open()">
+          開啟無障礙工具選單
+        </button>
+        <button type="button" class="btn btn-outline" title="套用深色高對比、大字體與白色大游標" onclick="window.A11yWidget && window.A11yWidget.applyProfile('visually-impaired')">
+          視障輔助
+        </button>
+        <button type="button" class="btn btn-outline" title="套用閱讀障礙專用字體、加寬字行距與閱讀尺規" onclick="window.A11yWidget && window.A11yWidget.applyProfile('dyslexia-friendly')">
+          閱讀障礙友善
+        </button>
+        <button type="button" class="btn btn-outline" title="啟用專注遮罩並暫停頁面閃爍動畫" onclick="window.A11yWidget && window.A11yWidget.applyProfile('adhd-focus')">
+          ADHD 專注遮罩
+        </button>
+        <button type="button" class="btn btn-outline" title="啟用特大字體、行距與點擊朗讀" onclick="window.A11yWidget && window.A11yWidget.applyProfile('senior-friendly')">
+          長者模式 (含朗讀)
+        </button>
+        <button type="button" class="btn btn-outline" title="清除所有已啟用的無障礙調整" onclick="window.A11yWidget && window.A11yWidget.reset()">
+          重設所有狀態
+        </button>
+      </div>
+    </div>
+
+    <!-- 動態動畫測試區 -->
+    <div class="motion-card" aria-label="動態抑制測試卡片">
+      <h2 style="margin:0 0 6px;font-size:1.15rem;">動態與閃爍抑制測試區</h2>
+      <p style="margin:0;font-size:0.9rem;color:var(--text-muted);">
+        開啟「暫停動畫」或「防癲癇模式」後，下方的旋轉指示器與跑馬燈將立即停止運作：
+      </p>
+      <div class="motion-stage">
+        <div class="orbit-spinner" role="status" aria-label="持續旋轉的載入動畫"></div>
+        <div style="font-size:0.9rem;">
+          <strong>即時系統狀態監控中</strong>
+          <div style="color:var(--text-muted);font-size:0.84rem;">測試 CSS Keyframes 與 Transition 強制暫停效果</div>
+        </div>
+      </div>
+      <div class="ticker-bar">
+        <span class="ticker-track">公告訊息：無障礙輔助面板支援鍵盤導覽、語音合成朗讀與高對比色彩補償 —— 點擊右下角圖示立即體驗！</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主要內容地標 Main -->
+  <div class="layout-grid">
+    <main role="main" aria-label="主要示範文章與互動區塊">
+
+      <!-- 區塊 1：文字排版與語音朗讀測試 -->
+      <article id="typography-section" class="card-section">
+        <h2>一、文字排版、行距、易讀字體與語音朗讀 (TTS) 測試</h2>
+        <p>
+          數位無障礙（Web Accessibility）的核心理念是確保所有人——包含視力障礙、色覺辨識差異、高齡長者、閱讀障礙（Dyslexia）或肢體不便的使用者——都能平等且順暢地獲取網路資訊。當您在工具面板開啟「點擊朗讀」時，只需直接用滑鼠點擊本段文字，瀏覽器便會自動以台灣繁體中文語音為您朗讀。
+        </p>
+
+        <blockquote>
+          「科技對一般人而言讓事情更方便；但對身心障礙者而言，科技讓原本不可能的事成為可能。」—— 無障礙設計準則
+        </blockquote>
+
+        <h3>多層級標題結構 (H3) 測試段落</h3>
+        <p>
+          透過調整「字體大小（+15% 至 +45%）」、「行高調整」與「字距調整」，頁面上的所有文字元素都會依原始字級等比例放大，同時不會破壞右側無障礙控制面板本身的排版。您也可以切換至「頁面結構導覽」分頁，檢視本頁自動擷取的 <a href="#visual-section">H1 至 H4 標題樹清單</a> 與所有超連結。
+        </p>
+
+        <h4>細部政策說明小節 (H4)</h4>
+        <ul>
+          <li>支援透過鍵盤 <strong>Tab 鍵</strong> 搭配「焦點強化」清楚辨識目前游標所在的互動元件。</li>
+          <li>提供「閱讀尺規」與「專注遮罩」，協助注意力不易集中或閱讀跳行的使用者穩定追蹤文字行。</li>
+          <li>所有個人化無障礙偏好皆自動儲存於瀏覽器 <code>localStorage</code>，重新整理或跨頁瀏覽無須重複設定。</li>
+        </ul>
+      </article>
+
+      <!-- 區塊 2：色彩對比與色盲濾鏡測試 -->
+      <section id="visual-section" class="card-section" aria-labelledby="visual-heading">
+        <h2 id="visual-heading">二、視覺對比與色盲輔助濾鏡對照表</h2>
+        <p>
+          以下四種狀態色塊常用於儀表板與表單訊息。紅綠色弱（Deuteranopia / Protanopia）使用者在未開啟補償前，常難以區分「危險紅」與「正常綠」。請在無障礙選單中切換「色盲濾鏡」、「深色高對比」或「全灰階」觀察變化：
+        </p>
+
+        <div class="palette-grid">
+          <div class="swatch-card swatch-red">
+            <div>錯誤 / 緊迫 (Red)</div>
+            <small>#DC2626 · 警示狀態</small>
+          </div>
+          <div class="swatch-card swatch-green">
+            <div>正常 / 通過 (Green)</div>
+            <small>#16A34A · 安全狀態</small>
+          </div>
+          <div class="swatch-card swatch-amber">
+            <div>注意 / 待辦 (Amber)</div>
+            <small>#D97706 · 提醒狀態</small>
+          </div>
+          <div class="swatch-card swatch-blue">
+            <div>資訊 / 連結 (Blue)</div>
+            <small>#2563EB · 引導狀態</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- 區塊 3：圖片與替代文字隱藏測試 -->
+      <section id="media-section" class="card-section" aria-labelledby="media-heading">
+        <h2 id="media-heading">三、圖片視覺隱藏與 ALT 替代文字提示測試</h2>
+        <p>
+          對於需要降低視覺干擾或依賴結構化資訊的使用者，開啟「隱藏圖片」功能後，下方圖片將變為透明，並在原位置清楚標示圖片的 <code>alt</code> 替代文字說明框：
+        </p>
+
+        <div class="media-grid">
+          <figure class="media-item">
+            <img
+              src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='320' viewBox='0 0 600 320'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='320' fill='url(%23g1)'/%3E%3Ccircle cx='480' cy='90' r='55' fill='%23fde047' opacity='0.85'/%3E%3Cpath d='M0 240 L160 140 L310 220 L440 130 L600 230 L600 320 L0 320 Z' fill='%231e3a8a' opacity='0.6'/%3E%3Ctext x='36' y='72' fill='white' font-family='sans-serif' font-size='26' font-weight='bold'%3E無障礙智慧城市遠景圖%3C/text%3E%3C/svg%3E"
+              alt="無障礙智慧城市遠景插畫：包含溫暖陽光、藍色山脈與友善通行的城市天際線"
+            />
+            <figcaption>圖 1：包含完整 alt 替代文字的風景插畫，測試「隱藏圖片」時的替代文字框顯示。</figcaption>
+          </figure>
+
+          <figure class="media-item">
+            <img
+              src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='320' viewBox='0 0 600 320'%3E%3Crect width='600' height='320' fill='%230f172a'/%3E%3Crect x='50' y='60' width='110' height='200' rx='10' fill='%2310b981'/%3E%3Crect x='190' y='110' width='110' height='150' rx='10' fill='%233b82f6'/%3E%3Crect x='330' y='40' width='110' height='220' rx='10' fill='%23f59e0b'/%3E%3Crect x='470' y='85' width='80' height='175' rx='10' fill='%23ec4899'/%3E%3Ctext x='50' y='38' fill='white' font-family='sans-serif' font-size='20' font-weight='bold'%3E2026 無障礙合規成長率統計圖%3C/text%3E%3C/svg%3E"
+              alt="2026 年各季度無障礙網頁合規成長率長條統計圖，第三季達到最高峰 94%"
+            />
+            <figcaption>圖 2：彩色數據統計圖，可同時測試色盲濾鏡、灰階與圖片替代文字功能。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 區塊 4：無障礙表單與鍵盤焦點測試 -->
+      <section id="form-section" class="card-section" aria-labelledby="form-heading">
+        <h2 id="form-heading">四、無障礙線上申辦表單（鍵盤焦點與高對比測試）</h2>
+        <p>
+          請嘗試開啟「焦點強化」與「醒目連結」，並使用鍵盤 <code>Tab</code> 鍵在下方輸入框、下拉選單與按鈕之間移動：
+        </p>
+
+        <form aria-label="無障礙服務意見回饋表單" onsubmit="event.preventDefault(); alert('感謝您的測試回饋！表單驗證正常。');">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="applicant-name">申請人姓名 (必填)</label>
+              <input id="applicant-name" class="form-control" type="text" placeholder="請輸入您的真實姓名" required />
+            </div>
+            <div class="form-group">
+              <label for="applicant-email">電子郵件信箱</label>
+              <input id="applicant-email" class="form-control" type="email" placeholder="example@domain.gov.tw" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="assist-category">常使用的無障礙輔助類型</label>
+            <select id="assist-category" class="form-control">
+              <option value="vision">視障與放大高對比輔助</option>
+              <option value="colorblind">色覺辨識補償濾鏡</option>
+              <option value="reading">專注閱讀尺規與遮罩</option>
+              <option value="speech">點擊文字語音合成朗讀 (TTS)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="assist-notes">補充建議說明</label>
+            <textarea id="assist-notes" class="form-control" rows="3" placeholder="請輸入您對網頁無障礙體驗的建議..."></textarea>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px;">
+            <button type="submit" class="btn btn-primary">送出測試表單</button>
+            <button type="reset" class="btn btn-outline">清除重填</button>
+            <a href="./configurator.html">需要自訂這個無障礙工具的外觀？前往設定產生器</a>
+          </div>
+        </form>
+      </section>
+
+    </main>
+
+    <!-- 側邊輔助欄 Aside -->
+    <aside role="complementary" aria-label="輔助說明與快速檢測欄">
+      <div class="side-card">
+        <h2 style="margin-top:0;font-size:1.2rem;">站長專屬工具</h2>
+        <p style="font-size:0.92rem;color:var(--text-muted);">
+          想要將這個無障礙小工具放入您的網站嗎？我們提供視覺化的「嵌入碼產生器後台」，可自訂按鈕顏色、位置、尺寸、形狀與啟用模組。
+        </p>
+        <a href="./configurator.html" class="btn btn-primary" style="width:100%;">
+          開啟嵌入碼產生器後台 →
+        </a>
+      </div>
+
+      <div class="side-card">
+        <h3 style="margin-top:0;font-size:1.08rem;">快速測試與 ARIA 自動修補</h3>
+        <input type="search" class="form-control" style="width:100%;margin-bottom:12px;" placeholder="站內搜尋（測試自動補齊 aria-label）" />
+        <ol style="padding-left:20px;margin:0 0 12px;font-size:0.9rem;color:var(--text-muted);display:flex;flex-direction:column;gap:8px;">
+          <li>按下 <span class="shortcut-kbd">Tab</span> 檢視頂部原生「跳至主要內容」列；按 <span class="shortcut-kbd">Alt+U</span> 零延遲開關選單。</li>
+          <li>開啟<strong>色彩反相</strong>或<strong>全灰階</strong>，頂部 Sticky 導覽列依然保持固定（Backdrop Filter 架構）。</li>
+          <li>開啟<strong>提示氣泡 (Tooltips)</strong> 後懸停於按鈕上，即可看到高對比放大提示。</li>
+          <li>點擊面板底部<strong>無障礙聲明</strong>，可檢視即時 DOM 自動修補統計。</li>
+        </ol>
+        <a href="https://www.w3.org/WAI/WCAG21/quickref/" target="_blank">W3C WCAG 2.1 參考指南</a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 頁尾地標 Footer -->
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <div>
+        <strong>OpenA11yWidget 無障礙小工具示範專案</strong>
+        <p style="margin:4px 0 0;font-size:0.88rem;color:#94a3b8;">
+          純原生 Vanilla JS · 零外部依賴 · Shadow DOM 隔離 · 支援雙語與 LocalStorage 自動記憶
+        </p>
+      </div>
+      <div style="display:flex;gap:20px;font-size:0.9rem;">
+        <a href="#typography-section">回到文章頂部</a>
+        <a href="./configurator.html">站長嵌入碼產生器</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 一行引入 A11yWidget -->
+  <script src="./a11y-widget.js" defer></script>
+</body>
+</html>

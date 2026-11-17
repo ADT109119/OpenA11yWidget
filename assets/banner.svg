@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" role="img" aria-labelledby="banner-title banner-desc">
+  <title id="banner-title">OpenA11yWidget Banner</title>
+  <desc id="banner-desc">Promotional banner for OpenA11yWidget showing brand emblem, feature badges, embed snippet, and stylized Shadow DOM widget interface preview.</desc>
+  <defs>
+    <linearGradient id="canvasBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="55%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="55%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.08"/>
+    </linearGradient>
+    <radialGradient id="glowBlue" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowCyan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#2563eb" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dotGrid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#94a3b8" opacity="0.16"/>
+    </pattern>
+    <filter id="cardShadow" x="-15%" y="-15%" width="135%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#020617" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="440" rx="24" fill="url(#canvasBg)"/>
+  <rect width="1200" height="440" rx="24" fill="url(#dotGrid)"/>
+  <circle cx="220" cy="100" r="240" fill="url(#glowCyan)"/>
+  <circle cx="980" cy="320" r="260" fill="url(#glowBlue)"/>
+
+  <!-- Left Content Area -->
+  <g transform="translate(60, 52)">
+    <!-- Brand Logo (exact match to assets/logo.svg scaled to 64x64) -->
+    <g transform="translate(-6.4, -6.4) scale(0.32)">
+      <rect x="20" y="20" width="200" height="200" rx="48" fill="url(#accentGrad)"/>
+      <rect x="24" y="24" width="192" height="192" rx="44" fill="none" stroke="url(#ringGrad)" stroke-width="2.5"/>
+      <g stroke="#bae6fd" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.85">
+        <path d="M56 76 V58 Q56 54 60 54 H78"/>
+        <path d="M184 76 V58 Q184 54 180 54 H162"/>
+        <path d="M56 164 V182 Q56 186 60 186 H78"/>
+        <path d="M184 164 V182 Q184 186 180 186 H162"/>
+      </g>
+      <circle cx="120" cy="120" r="60" fill="#ffffff" fill-opacity="0.1"/>
+      <g fill="#ffffff" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="120" cy="76" r="13" stroke="none"/>
+        <path d="M80 99 H160" stroke-width="11" fill="none"/>
+        <path d="M120 99 V134" stroke-width="13" fill="none"/>
+        <path d="M120 134 L98 175" stroke-width="12" fill="none"/>
+        <path d="M120 134 L142 175" stroke-width="12" fill="none"/>
+      </g>
+      <g stroke="#fef08a" stroke-width="4.5" stroke-linecap="round" fill="none">
+        <path d="M167 104 A24 24 0 0 1 167 136" opacity="0.95"/>
+        <path d="M179 94 A38 38 0 0 1 179 146" opacity="0.72"/>
+      </g>
+    </g>
+
+    <text x="82" y="17" fill="#38bdf8" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12.5" font-weight="700" letter-spacing="1.6">OPEN SHADOW DOM · ZERO DEPENDENCY</text>
+    <text x="82" y="55" fill="#ffffff" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="34" font-weight="800" letter-spacing="-0.5">OpenA11yWidget</text>
+
+    <!-- Headline & Description (single-line text elements, no stray whitespace) -->
+    <text x="0" y="116" fill="#f8fafc" font-family="system-ui, -apple-system, 'Microsoft JhengHei', 'PingFang TC', sans-serif" font-size="28" font-weight="800">一行程式碼，打造完整網頁無障礙輔助體驗</text>
+    <text x="0" y="154" fill="#cbd5e1" font-family="system-ui, -apple-system, 'Microsoft JhengHei', 'PingFang TC', sans-serif" font-size="16" font-weight="500">零污染 Shadow DOM 隔離 · Backdrop 濾鏡不破壞 Fixed 定位</text>
+    <text x="0" y="182" fill="#cbd5e1" font-family="system-ui, -apple-system, 'Microsoft JhengHei', 'PingFang TC', sans-serif" font-size="16" font-weight="500">內建 8 大情境模式、Skip Link 導覽列、自動 ARIA 修補與嵌入碼產生器</text>
+
+    <!-- 4 Feature Pill Badges (centered labels) -->
+    <g transform="translate(0, 212)" font-family="system-ui, -apple-system, 'Microsoft JhengHei', 'PingFang TC', sans-serif" font-size="13" font-weight="700">
+      <rect x="0" y="0" width="150" height="36" rx="18" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <circle cx="20" cy="18" r="5" fill="#22c55e"/>
+      <text x="88" y="23" text-anchor="middle" fill="#f1f5f9">Shadow DOM</text>
+
+      <rect x="162" y="0" width="150" height="36" rx="18" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <circle cx="182" cy="18" r="5" fill="#38bdf8"/>
+      <text x="250" y="23" text-anchor="middle" fill="#f1f5f9">8 大情境模式</text>
+
+      <rect x="324" y="0" width="150" height="36" rx="18" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <circle cx="344" cy="18" r="5" fill="#facc15"/>
+      <text x="412" y="23" text-anchor="middle" fill="#f1f5f9">自動 ARIA 修補</text>
+
+      <rect x="486" y="0" width="150" height="36" rx="18" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <circle cx="506" cy="18" r="5" fill="#a78bfa"/>
+      <text x="574" y="23" text-anchor="middle" fill="#f1f5f9">語音與結構樹</text>
+    </g>
+
+    <!-- Quick Embed Bar -->
+    <g transform="translate(0, 266)">
+      <rect x="0" y="0" width="636" height="46" rx="10" fill="#020617" stroke="#1e293b" stroke-width="1.5"/>
+      <text x="18" y="28" fill="#7dd3fc" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13.5">&lt;script src="./a11y-widget.js" data-color="#2563eb" defer&gt;&lt;/script&gt;</text>
+    </g>
+  </g>
+
+  <!-- Right Stylized Widget Mockup Card -->
+  <g transform="translate(770, 36)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="366" height="360" rx="20" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+
+    <!-- Header -->
+    <path d="M0 20 Q0 0 20 0 H346 Q366 0 366 20 V88 H0 Z" fill="url(#accentGrad)"/>
+    <rect x="16" y="14" width="32" height="32" rx="9" fill="#ffffff" fill-opacity="0.2"/>
+    <circle cx="32" cy="23" r="2.8" fill="#ffffff"/>
+    <path d="M25 27.5 H39 M32 27.5 V33 M32 33 L28 39 M32 33 L36 39" stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+
+    <text x="58" y="28" fill="#ffffff" font-family="system-ui, -apple-system, 'Microsoft JhengHei', sans-serif" font-size="14" font-weight="800">無障礙輔助工具</text>
+    <text x="58" y="44" fill="#e0f2fe" font-family="system-ui, -apple-system, sans-serif" font-size="10.5">Accessibility Menu · WCAG 2.1</text>
+
+    <!-- Header Pills -->
+    <rect x="268" y="16" width="34" height="24" rx="7" fill="#ffffff" fill-opacity="0.18" stroke="#ffffff" stroke-opacity="0.35"/>
+    <text x="285" y="32" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">XL</text>
+    <rect x="308" y="16" width="42" height="24" rx="7" fill="#ffffff" fill-opacity="0.18" stroke="#ffffff" stroke-opacity="0.35"/>
+    <text x="329" y="32" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">EN</text>
+
+    <!-- Segmented Tabs -->
+    <rect x="16" y="56" width="334" height="24" rx="8" fill="#0f172a" fill-opacity="0.22"/>
+    <rect x="18" y="58" width="165" height="20" rx="6" fill="#ffffff"/>
+    <text x="100.5" y="72" text-anchor="middle" fill="#0f172a" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="10.5" font-weight="700">無障礙調整</text>
+    <text x="265.5" y="72" text-anchor="middle" fill="#ffffff" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="10.5" font-weight="600">頁面結構導覽</text>
+
+    <!-- Profile Items -->
+    <g transform="translate(16, 102)">
+      <rect x="0" y="0" width="334" height="44" rx="11" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <rect x="10" y="8" width="28" height="28" rx="8" fill="#2563eb"/>
+      <circle cx="24" cy="22" r="5" fill="none" stroke="#ffffff" stroke-width="2"/>
+      <text x="48" y="20" fill="#0f172a" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="12" font-weight="700">視障輔助模式</text>
+      <text x="48" y="34" fill="#475569" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="10">文字放大 · 深色高對比 · 大游標</text>
+      <rect x="274" y="12" width="48" height="20" rx="10" fill="#2563eb"/>
+      <text x="298" y="25.5" text-anchor="middle" fill="#ffffff" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="9.5" font-weight="700">已開啟</text>
+
+      <rect x="0" y="52" width="334" height="44" rx="11" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+      <rect x="10" y="60" width="28" height="28" rx="8" fill="#f1f5f9"/>
+      <circle cx="24" cy="74" r="5" fill="none" stroke="#334155" stroke-width="2"/>
+      <text x="48" y="72" fill="#0f172a" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="12" font-weight="700">閱讀障礙 / ADHD 專注</text>
+      <text x="48" y="86" fill="#64748b" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="10">Dyslexia 字體 · 專注閱讀遮罩</text>
+      <rect x="274" y="64" width="48" height="20" rx="10" fill="#e2e8f0"/>
+      <text x="298" y="77.5" text-anchor="middle" fill="#475569" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="9.5" font-weight="700">已關閉</text>
+    </g>
+
+    <!-- 3 Grid Cards -->
+    <g transform="translate(16, 210)">
+      <rect x="0" y="0" width="104" height="80" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <circle cx="52" cy="24" r="11" fill="#2563eb"/>
+      <text x="52" y="28" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="800">A+</text>
+      <text x="52" y="50" text-anchor="middle" fill="#0f172a" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="11" font-weight="700">字體大小</text>
+      <text x="52" y="66" text-anchor="middle" fill="#2563eb" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700">+15%</text>
+
+      <rect x="115" y="0" width="104" height="80" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+      <circle cx="167" cy="24" r="11" fill="#f1f5f9"/>
+      <circle cx="167" cy="24" r="5" fill="#0f172a"/>
+      <text x="167" y="50" text-anchor="middle" fill="#0f172a" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="11" font-weight="700">色盲濾鏡</text>
+      <text x="167" y="66" text-anchor="middle" fill="#64748b" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="9.5">補償開關</text>
+
+      <rect x="230" y="0" width="104" height="80" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+      <circle cx="282" cy="24" r="11" fill="#f1f5f9"/>
+      <rect x="276" y="19" width="12" height="9" rx="2" fill="none" stroke="#0f172a" stroke-width="1.8"/>
+      <text x="282" y="50" text-anchor="middle" fill="#0f172a" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="11" font-weight="700">提示氣泡</text>
+      <text x="282" y="66" text-anchor="middle" fill="#64748b" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="9.5">Tooltips</text>
+    </g>
+
+    <!-- Bottom Bar -->
+    <path d="M0 304 H366 V340 Q366 360 346 360 H20 Q0 360 0 340 Z" fill="#ffffff"/>
+    <line x1="0" y1="304" x2="366" y2="304" stroke="#e2e8f0"/>
+    <rect x="20" y="318" width="82" height="28" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="61" y="336" text-anchor="middle" fill="#0f172a" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="10.5" font-weight="700">全部重設</text>
+    <rect x="110" y="318" width="86" height="28" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="153" y="336" text-anchor="middle" fill="#0f172a" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="10.5" font-weight="700">移動 / 隱藏</text>
+    <text x="350" y="336" text-anchor="end" fill="#64748b" font-family="system-ui, 'Microsoft JhengHei', sans-serif" font-size="10.5" font-weight="600">快捷鍵: Alt+U</text>
+  </g>
+
+  <!-- Floating Trigger Preview (outside lower-left of panel, zero text overlap) -->
+  <g transform="translate(734, 372)" filter="url(#cardShadow)">
+    <circle cx="24" cy="24" r="24" fill="url(#accentGrad)" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="24" cy="15" r="3.2" fill="#ffffff"/>
+    <path d="M15 21 H33 M24 21 V29 M24 29 L19 37 M24 29 L29 37" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+    <circle cx="42" cy="6" r="9.5" fill="#ef4444" stroke="#ffffff" stroke-width="2"/>
+    <text x="42" y="9.5" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10" font-weight="800">5</text>
+  </g>
+</svg>

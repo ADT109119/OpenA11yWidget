@@ -39,8 +39,8 @@
 4. **列印隔離 (`@media print`)**
    - 所有視覺覆寫樣式均包覆於 `@media screen` 內，並於 `@media print` 隱藏 `#a11y-widget-host`、`#a11y-skip-host` 與 `#a11y-svg-defs`，確保列印時頁面乾淨不受影響。
 
-5. **非破壞性字體等比縮放**
-   - 使用 `WeakMap` (`fontSizeCache`) 記錄宿主頁面文字元素的原始計算 `fontSize` 與行內 `style.fontSize`，在多段放大 (`+15%`, `+30%`, `+45%`) 切換與重設時可精準還原，避免雙重倍率疊加。
+5. **兩階段非破壞性字體等比縮放**
+   - 採用兩階段 (Pass 1 純讀取 / Pass 2 純寫入) 演算法並結合 `WeakMap` (`fontSizeCache`) 記錄宿主頁面文字元素的原始計算 `fontSize` 與行內 `style.fontSize`，防止巢狀子元素重複讀取已放大字級而疊加倍率。
 
 6. **六大無障礙功能模組 (`ALL_MODULES`)**
    - `profiles`（8 大情境快速模式）：
@@ -53,8 +53,8 @@
      - `cognitive-learning`（認知與學習輔助）
      - `seizure-safe`（防癲癇 / 無閃爍模式）
    - `visual`（視覺與色彩）：對比模式（`normal` / `dark` / `light` / `invert`）、飽和度與灰階（`normal` / `high` / `low` / `grayscale`）、SVG `<feColorMatrix>` 色盲濾鏡（`none` / `deuteranopia` / `protanopia` / `tritanopia`）。
-   - `typography`（文字與排版）：字體大小（`0`–`3`）、行高調整（`0`–`3`）、字距與詞距調整（`0`–`3`）、易讀字體（`0` 預設 / `1` 高易讀黑體 / `2` 閱讀障礙專用字體）、文字對齊（`normal` / `left` / `center` / `justify`）。
-   - `navigation`（導航與閱讀輔助）：44x44 高對比大游標（`none` / `white` / `black`）、硬體加速閱讀尺規 (`readingGuide`)、140px 清晰視窗專注遮罩 (`readingMask`)、醒目連結 (`highlightLinks`)、醒目標題 (`highlightHeadings`)、鍵盤焦點強化 (`focusOutline`)、懸停與焦點提示氣泡 (`tooltips`)。
+   - `typography`（文字與排版）：字體大小（`0`–`3`）、行高調整（`0`–`3`）、字距與詞距調整（`0`–`3`）、易讀字體（`0` 預設 / `1` 高易讀黑體 / `2` 閱讀障礙專用字體）、文字對齊（`normal` / `left` / `center` / `justify`）、醒目標題 (`highlightHeadings`)。
+   - `navigation`（導航與閱讀輔助）：44x44 高對比大游標（`none` / `white` / `black`）、硬體加速閱讀尺規 (`readingGuide`)、140px 清晰視窗專注遮罩 (`readingMask`)、醒目連結 (`highlightLinks`)、鍵盤焦點強化 (`focusOutline`)、懸停與焦點提示氣泡 (`tooltips`)。
    - `motion`（動態抑制與語音）：暫停動畫與 `<video>` 播放 (`stopAnimations`)、隱藏圖片並於 Shadow DOM 疊層顯示 `alt` 文字 (`hideImages`)、整合 `window.speechSynthesis` 之點擊朗讀與語速控制 (`ttsClick`)。
    - `structure`（頁面結構導覽）：自動掃描宿主頁面 `H1`–`H6` 標題樹、語意地標 (`Landmarks`) 與可見連結清單，點擊可平滑捲動定位、聚焦並短暫高亮。
    - **面板整合控制**：標題列內建 **XL 超大面板模式 (`oversizedWidget`)**、語言切換 (`zh-TW` / `en`)，頁尾提供 **移動左側/右側與階段隱藏 (`Move / Hide`)** 及 **無障礙聲明與即時修補統計 (`Statement`)**。

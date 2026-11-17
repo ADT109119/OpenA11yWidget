@@ -126,6 +126,10 @@
       align-items: start;
     }
 
+    .main-wrap > * {
+      min-width: 0;
+    }
+
     .panel-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -685,8 +689,8 @@
         }
 
         var safeSrc = (current.scriptUrl || './a11y-widget.js').trim().replace(/"/g, '&quot;');
-        var attrPart = attrs.length ? '\n  ' + attrs.join('\n  ') : '';
-        codeHtmlEl.textContent = '<script src="' + safeSrc + '"' + attrPart + '\n  defer><\/script>';
+        var attrPart = attrs.length ? '\n  ' + attrs.join('\n  ') + '\n  ' : ' ';
+        codeHtmlEl.textContent = '<script src="' + safeSrc + '"' + attrPart + 'defer><\/script>';
 
         // Build JS Config snippet
         var jsConfigObj = {

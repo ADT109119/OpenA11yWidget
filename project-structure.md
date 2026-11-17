@@ -23,9 +23,7 @@
 
 1. **Shadow DOM 樣式隔離與濾鏡不破壞 `position: fixed`**
    - 小工具介面、閱讀尺規、專注遮罩、提示氣泡 (`#a11y-tooltip-bubble`) 與圖片 `alt` 提示框皆渲染於 `document.body` 下的 `#a11y-widget-host` Open Shadow DOM 中，避免與宿主網站 CSS 互相干擾。
-   - **Backdrop Filter 隔離層 (`#a11y-backdrop-filter`)**：色彩反相 (`invert`)、飽和度 (`high`/`low`) 與全灰階 (`grayscale`) 透過 Shadow DOM 內全螢幕疊層的 `backdrop-filter` 套用（媒體節點則於需要時局部反轉還原），**不在宿主網站的 `#app` / 容器上套用 `filter`**，避免建立新的 containing block 進而破壞宿主網站既有的 `position: fixed` / `sticky` 排版。
-   - 色盲補償 SVG `<feColorMatrix>` 濾鏡 (`#a11y-svg-defs`) 套用至：
-     `html[data-a11y-filter-active="true"] body > *:not(#a11y-widget-host):not(#a11y-skip-host):not(#a11y-svg-defs):not(script):not(style):not(link)`。
+   - **Backdrop Filter 隔離層 (`#a11y-backdrop-filter`)**：色彩反相 (`invert`)、飽和度 (`high`/`low`)、全灰階 (`grayscale`) 與色盲補償 SVG `<feColorMatrix>` 濾鏡（`deuteranopia` / `protanopia` / `tritanopia`，顯式限定 `x="0%" y="0%" width="100%" height="100%"` 並同步置於 Shadow DOM 與 `#a11y-svg-defs`）皆透過 Shadow DOM 內全螢幕疊層的 `backdrop-filter` 套用（反相模式下媒體節點則於需要時局部反轉還原），**不在宿主網站的 `body > *` / 容器上套用 `filter`**，避免建立新的 containing block 進而破壞宿主網站既有的 `position: fixed` / `sticky` 排版。
 
 2. **鍵盤安全與原生 Skip-to-Content 導覽列**
    - **Skip Bar (`#a11y-skip-host`)**：插入於 `document.body` 第一個子節點，使用者初次按下 `Tab` 時於螢幕左上角浮現「跳至主要內容」與「開啟無障礙選單」按鈕，解決外掛位於頁面尾端導致鍵盤導覽順序受阻的問題。

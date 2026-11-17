@@ -659,6 +659,24 @@
     return 'url("data:image/svg+xml;utf8,' + encodeURIComponent(svg) + '") 4 3, auto';
   }
 
+  function getColorblindFilterDefsHtml() {
+    return (
+      '<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:fixed;width:0;height:0;overflow:hidden;pointer-events:none;">' +
+      '  <defs>' +
+      '    <filter id="a11y-filter-deuteranopia" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+      '      <feColorMatrix type="matrix" values="1.15 -0.15 0 0 0  0 0.85 0.15 0 0  -0.25 0.45 0.80 0 0  0 0 0 1 0"/>' +
+      '    </filter>' +
+      '    <filter id="a11y-filter-protanopia" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+      '      <feColorMatrix type="matrix" values="0.85 0.15 0 0 0  -0.15 1.15 0 0 0  0.45 -0.25 0.80 0 0  0 0 0 1 0"/>' +
+      '    </filter>' +
+      '    <filter id="a11y-filter-tritanopia" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+      '      <feColorMatrix type="matrix" values="0.95 0.05 0 0 0  0 0.85 0.15 0 0  0.25 -0.15 0.90 0 0  0 0 0 1 0"/>' +
+      '    </filter>' +
+      '  </defs>' +
+      '</svg>'
+    );
+  }
+
   function ensureSvgDefs() {
     if (svgDefsEl && document.body.contains(svgDefsEl)) return;
     svgDefsEl = document.getElementById(SVG_DEFS_ID);
@@ -667,20 +685,7 @@
       svgDefsEl.id = SVG_DEFS_ID;
       svgDefsEl.setAttribute('aria-hidden', 'true');
       svgDefsEl.style.cssText = 'position:fixed;width:0;height:0;overflow:hidden;opacity:0;pointer-events:none;z-index:-1;';
-      svgDefsEl.innerHTML =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">' +
-        '  <defs>' +
-        '    <filter id="a11y-filter-deuteranopia" color-interpolation-filters="sRGB">' +
-        '      <feColorMatrix type="matrix" values="1.15 -0.15 0 0 0  0 0.85 0.15 0 0  -0.25 0.45 0.80 0 0  0 0 0 1 0"/>' +
-        '    </filter>' +
-        '    <filter id="a11y-filter-protanopia" color-interpolation-filters="sRGB">' +
-        '      <feColorMatrix type="matrix" values="0.85 0.15 0 0 0  -0.15 1.15 0 0 0  0.45 -0.25 0.80 0 0  0 0 0 1 0"/>' +
-        '    </filter>' +
-        '    <filter id="a11y-filter-tritanopia" color-interpolation-filters="sRGB">' +
-        '      <feColorMatrix type="matrix" values="0.95 0.05 0 0 0  0 0.85 0.15 0 0  0.25 -0.15 0.90 0 0  0 0 0 1 0"/>' +
-        '    </filter>' +
-        '  </defs>' +
-        '</svg>';
+      svgDefsEl.innerHTML = getColorblindFilterDefsHtml();
       document.body.appendChild(svgDefsEl);
     }
   }
@@ -841,6 +846,9 @@
     if (state.saturation === 'high') backdropFilters.push('saturate(185%)');
     else if (state.saturation === 'low') backdropFilters.push('saturate(45%)');
     else if (state.saturation === 'grayscale') backdropFilters.push('grayscale(100%)');
+    if (state.colorblind !== 'none') {
+      backdropFilters.push('url(#a11y-filter-' + state.colorblind + ')');
+    }
 
     if (shadow) {
       var backdropEl = shadow.getElementById('a11y-backdrop-filter');
@@ -869,17 +877,7 @@
       );
     }
 
-    // 1B. Colorblind SVG Matrix Filter (applied only when SVG colorblind filter is active)
-    if (state.colorblind !== 'none') {
-      root.setAttribute('data-a11y-filter-active', 'true');
-      screenCss.push(
-        'html[data-a11y-filter-active="true"] ' + contentScope + ':not(script):not(style):not(link) {' +
-        '  filter: url(#a11y-filter-' + state.colorblind + ') !important;' +
-        '}'
-      );
-    } else {
-      root.removeAttribute('data-a11y-filter-active');
-    }
+    root.removeAttribute('data-a11y-filter-active');
 
     // 2. High-contrast Dark / Light themes (preserve swatches, decorative dots, and inline span transparency)
     var contrastSkip = ':not(.swatch-card):not(.swatch-card *):not(.swatch-btn):not(.pulse-dot)';
@@ -1006,7 +1004,6 @@
         '  outline-offset: 2px !important;' +
         '  text-decoration: underline !important;' +
         '  text-decoration-thickness: 2px !important;' +
-        '  border-radius: 3px !important;' +
         '}' +
         contentScope + ' a[href] * {' +
         '  color: #111827 !important;' +
@@ -2091,6 +2088,7 @@
     shadow = hostEl.attachShadow({ mode: 'open' });
 
     shadow.innerHTML =
+      getColorblindFilterDefsHtml() +
       '<style id="a11y-shadow-style"></style>' +
       '<div id="a11y-sr-announcer" class="a11y-sr-only" aria-live="polite" aria-atomic="true"></div>' +
       '<div id="a11y-backdrop-filter" hidden aria-hidden="true"></div>' +
